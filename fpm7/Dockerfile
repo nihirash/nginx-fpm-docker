@@ -1,14 +1,27 @@
-FROM ubuntu:xenial
+FROM php:7.0-fpm
 
-# fpm
-RUN DEBIAN_FRONTEND="noninteractive" apt-get update && \
-				     apt-get -y upgrade && \
- 				     apt-get update --fix-missing &&\ 
-				     apt-get -y install curl php7.0 php7.0-mysql php7.0-mcrypt php7.0-curl php7.0-mbstring php7.0-soap php7.0-xml php7.0-zip php7.0-gd php7.0-fpm php7.0-json php7.0-mbstring 
+# ...
 
+RUN apt-get update && apt-get install -y \
+    libpq-dev \
+    libmemcached-dev \
+    curl
+
+# ...
+
+# Install Memcached for php 7
+RUN curl -L -o /tmp/memcached.tar.gz "https://github.com/php-memcached-dev/php-memcached/archive/php7.tar.gz" \
+    && mkdir -p /usr/src/php/ext/memcached \
+    && tar -C /usr/src/php/ext/memcached -zxvf /tmp/memcached.tar.gz --strip 1 \
+    && docker-php-ext-configure memcached \
+    && docker-php-ext-install memcached \
+    && rm /tmp/memcached.tar.gz
+
+# ...
 COPY php.ini /etc/php/7.0/fpm/
-COPY www.conf /etc/php/7.0/fpm/pool.d/
-RUN mkdir /run/php
-EXPOSE 9000
 
-CMD php-fpm7.0 -F
+
+CMD ["php-fpm"]
+
+
+EXPOSE 9000

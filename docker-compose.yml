@@ -11,3 +11,10 @@ php:
     build: ./fpm7/
     volumes:
         - ./code:/code
+    links:
+      - memcacheq
+      - memcacheq
+memcacheq:
+    image: wupeng/memcacheq:0.2.0
+memcache:
+    image: memcached:latests
