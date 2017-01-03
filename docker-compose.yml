@@ -14,7 +14,18 @@ php:
     links:
       - memcacheq
       - memcache
+      - mysql
 memcacheq:
     image: wupeng/memcacheq:0.2.0
 memcache:
     image: memcached:latest
+mysql:
+    image: mysql
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=pinnport
+      - MYSQL_DATABASE=pinnport
+      - MYSQL_USER=pinnport
+      - MYSQL_PASSWORD=pinnport
+    volumes:
+      - ./db_data:/var/lib/mysql

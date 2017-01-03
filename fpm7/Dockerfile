@@ -5,9 +5,11 @@ FROM php:7.0-fpm
 RUN apt-get update && apt-get install -y \
     libpq-dev \
     libmemcached-dev \
-    curl
+    curl \
+    libmcrypt-dev
 
-# ...
+# Install PDO/MySQL
+RUN docker-php-ext-install pdo pdo_mysql
 
 # Install Memcached for php 7
 RUN curl -L -o /tmp/memcached.tar.gz "https://github.com/php-memcached-dev/php-memcached/archive/php7.tar.gz" \
