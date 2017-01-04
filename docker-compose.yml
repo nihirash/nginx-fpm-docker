@@ -12,16 +12,15 @@ php:
     volumes:
         - ./code:/code
     links:
-      - memcacheq
       - memcache
       - mysql
-memcacheq:
-    image: wupeng/memcacheq:0.2.0
+      - sq
+sq:
+    image: schickling/beanstalkd
 memcache:
     image: memcached:latest
 mysql:
     image: mysql
-    restart: always
     environment:
       - MYSQL_ROOT_PASSWORD=pinnport
       - MYSQL_DATABASE=pinnport
